@@ -7,8 +7,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import java.io.File;
+
+import java.awt.*;
 import java.io.IOException;
 import java.sql.*;
 
@@ -38,8 +45,28 @@ public class ChildControl {
     @FXML
     private Label namelabel;
 
+    @FXML
+    private ChoiceBox<String> filter;
+
+    @FXML
+    private ImageView imageView;
+
     private String user;
 
+    @FXML
+    public void initializeimage(){
+        String imagePath = new File("cewek.jpeg").toURI().toString();
+        Image image = new Image(imagePath);
+        imageView.setImage(image);
+    }
+
+    @FXML
+    public void initialize2(){
+        ObservableList<String> items = FXCollections.observableArrayList("Kategori","Makanan & Minuman", "Fashion", "Produk Digital", "Travel", "Game");
+        filter.setItems(items);
+//        filter.getSelectionModel().selectFirst();
+        filter.setValue("Kategori");
+    }
 
     @FXML
     private void initialize1() {
@@ -72,6 +99,8 @@ public class ChildControl {
                     vouchers.add(new Voucher(idVoucher, nama, jenis, tanggal, kategori));
                     System.out.println(idVoucher + " " + nama + " " + jenis + " " + tanggal + " " + kategori);
                     initialize1();
+                    initialize2();
+                    initializeimage();
                 }
 
                 System.out.println("Database Acces");
