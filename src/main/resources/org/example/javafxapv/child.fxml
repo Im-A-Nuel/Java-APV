@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.javafxapv.ChildControl">
+   <children>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFF000;">
+         <children>
+            <Button fx:id="logout" layoutX="14.0" layoutY="366.0" mnemonicParsing="false" onAction="#onLogoutButtonClick" prefHeight="17.0" prefWidth="44.0" text="LogOut">
+               <font>
+                  <Font size="9.0" />
+               </font></Button>
+            <Label fx:id="namelabel" layoutX="82.0" layoutY="107.0" text="Nama" />
+         </children></AnchorPane>
+      <AnchorPane prefHeight="400.0" prefWidth="410.0" style="-fx-background-color: E9E8E8;">
+         <children>
+            <TextField layoutX="91.0" layoutY="29.0" prefHeight="15.0" prefWidth="164.0" promptText="search" />
+            <Button fx:id="search" layoutX="264.0" layoutY="29.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="32.0" text="🔎">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </Button>
+            <ChoiceBox layoutX="322.0" layoutY="29.0" prefHeight="25.0" prefWidth="44.0" />
+            <TableView fx:id="tableView" layoutX="14.0" layoutY="66.0" prefHeight="315.0" prefWidth="371.0">
+              <columns>
+                <TableColumn fx:id="idVoucherColumn" prefWidth="75.0" text="idVoucher" />
+                <TableColumn fx:id="namaColumn" prefWidth="75.0" text="Nama" />
+                  <TableColumn fx:id="jenisColumn" prefWidth="75.0" text="jenis" />
+                  <TableColumn fx:id="tanggalColumn" prefWidth="75.0" text="tanggal" />
+                  <TableColumn fx:id="kategoriColumn" prefWidth="75.0" text="kategori" />
+              </columns>
+            </TableView>
+            <Button fx:id="refresh" layoutX="47.0" layoutY="28.0" mnemonicParsing="false" onAction="#onRefreshButtonClick" prefWidth="32.0" text="🔃" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
+               <font>
+                  <Font name="System Bold Italic" size="13.0" />
+               </font></Button>
+         </children></AnchorPane>
+   </children>
+</HBox>
