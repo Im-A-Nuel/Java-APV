@@ -2,6 +2,7 @@ package org.example.javafxapv;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -13,14 +14,19 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import java.io.File;
+import javafx.util.Callback;
 
+import java.io.File;
 import java.awt.*;
 import java.io.IOException;
 import java.sql.*;
 
+import static org.example.javafxapv.ChildControl.Mode.*;
+
+
 public class ChildControl {
 
+    public TableColumn actionColumn;
     @FXML
     private Button logout;
 
@@ -48,16 +54,36 @@ public class ChildControl {
     @FXML
     private ChoiceBox<String> filter;
 
-    @FXML
-    private ImageView imageView;
+//    @FXML
+//    private ImageView imageView;
+
+    public enum Mode {
+        VIEW, EDIT, DELETE
+    }
+
+    private Mode mode = Mode.VIEW; // Mode default adalah VIEW
+
 
     private String user;
 
-    @FXML
-    public void initializeimage(){
-        String imagePath = new File("cewek.jpeg").toURI().toString();
-        Image image = new Image(imagePath);
-        imageView.setImage(image);
+    // Metode untuk mengatur gambar ke ImageView
+//    public void setImage() {
+//        // Membuat objek Image dengan menggunakan path file gambar
+//        Image image = new Image("bucket.png");
+//
+//        // Mengatur gambar ke ImageView
+//        imageView.setImage(image);
+//    }
+
+//    @FXML
+//    public void initializeimage(){
+//        String imagePath = new File("bucket.png").toURI().toString();
+//        Image image = new Image(imagePath);
+//        imageView.setImage(image);
+//    }
+
+    public void setMode(Mode mode) {
+        this.mode = mode;
     }
 
     @FXML
@@ -76,6 +102,71 @@ public class ChildControl {
         jenisColumn.setCellValueFactory(new PropertyValueFactory<>("jenis"));
         tanggalColumn.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
         kategoriColumn.setCellValueFactory(new PropertyValueFactory<>("kategori"));
+
+//
+//        // Menambahkan kolom tombol untuk setiap mode
+//        TableColumn<Voucher, Void> actionColumn = new TableColumn<>("Action");
+        // Menambahkan tombol ke setiap baris
+        Callback<TableColumn<Voucher, Void>, TableCell<Voucher, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Voucher, Void> call(final TableColumn<Voucher, Void> param) {
+                final TableCell<Voucher, Void> cell = new TableCell<>() {
+                    private final Button detailButton = new Button("Detail");
+                    private final Button editButton = new Button("Edit");
+                    private final Button deleteButton = new Button("Delete");
+
+                    {
+                        // Atur aksi untuk tombol detail
+                        detailButton.setOnAction(event -> {
+                            Voucher voucher = getTableView().getItems().get(getIndex());
+                            // Lakukan sesuatu saat tombol detail ditekan
+                        });
+
+                        // Atur aksi untuk tombol edit
+                        editButton.setOnAction(event -> {
+                            Voucher voucher = getTableView().getItems().get(getIndex());
+                            // Lakukan sesuatu saat tombol edit ditekan
+                        });
+
+                        // Atur aksi untuk tombol delete
+                        deleteButton.setOnAction(event -> {
+                            Voucher voucher = getTableView().getItems().get(getIndex());
+                            // Lakukan sesuatu saat tombol delete ditekan
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            // Tampilkan tombol sesuai dengan mode
+                            switch (mode) {
+                                case VIEW:
+                                    setGraphic(detailButton);
+                                    break;
+                                case EDIT:
+                                    setGraphic(editButton);
+                                    break;
+                                case DELETE:
+                                    setGraphic(deleteButton);
+                                    break;
+                            }
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+
+//        tableView.getColumns().add(actionColumn);
+        actionColumn.setCellFactory(cellFactory);
+
+
+        // Menambahkan kolom aksi ke TableView
+
+
     }
 
     private ObservableList<Voucher> getVoucherFromDatabase(String username){
@@ -100,7 +191,7 @@ public class ChildControl {
                     System.out.println(idVoucher + " " + nama + " " + jenis + " " + tanggal + " " + kategori);
                     initialize1();
                     initialize2();
-                    initializeimage();
+//                    setImage();
                 }
 
                 System.out.println("Database Acces");
@@ -161,5 +252,20 @@ public class ChildControl {
 
     public void onRefreshButtonClick() {
         tableView.refresh();
+    }
+
+    public void onEditButtonClick() {
+        setMode(EDIT);
+        onRefreshButtonClick();
+    }
+
+    public void onDeleteButtonClick() {
+        setMode(DELETE);
+        onRefreshButtonClick();
+    }
+
+    public void onViewButtonClick(ActionEvent actionEvent) {
+        setMode(VIEW);
+        onRefreshButtonClick();
     }
 }
