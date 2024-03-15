@@ -98,6 +98,27 @@ public class ChildControl {
         }
     }
 
+    private void showEditPopup(Voucher voucher){
+        try {
+            // load editPage
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("editPage.fxml"));
+            Parent root = loader.load();
+
+            // inisialiasi data popup
+            editPageControl control = loader.getController();
+            control.showData(voucher);
+
+            //buat stage popup
+            Stage popup = new Stage();
+            popup.initModality(Modality.APPLICATION_MODAL);
+            popup.setScene(new Scene(root));
+            popup.showAndWait();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
     public void setMode(Mode mode) {
         this.mode = mode;
     }
@@ -138,14 +159,14 @@ public class ChildControl {
 
                             showDetailPopup(voucher);
 
-
-
                         });
 
                         // Atur aksi untuk tombol edit
                         editButton.setOnAction(event -> {
                             Voucher voucher = getTableView().getItems().get(getIndex());
-                            // Lakukan sesuatu saat tombol edit ditekan
+
+                            showEditPopup(voucher);
+
                         });
 
                         // Atur aksi untuk tombol delete
