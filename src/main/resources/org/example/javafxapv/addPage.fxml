@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="548.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.javafxapv.addPageControl">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="100.0" style="-fx-background-color: #FFF000;" />
+      <ScrollPane prefHeight="400.0" prefWidth="435.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="505.0" prefWidth="419.0">
+               <children>
+                  <Label layoutX="25.0" layoutY="104.0" text="Nama Voucher" />
+                  <Label layoutX="25.0" layoutY="144.0" text="Jenis" />
+                  <Label layoutX="24.0" layoutY="66.0" text="id" />
+                  <Label layoutX="25.0" layoutY="235.0" text="Masa berakhir" />
+                  <Label layoutX="24.0" layoutY="190.0" text="Kategori" />
+                  <Label layoutX="24.0" layoutY="283.0" text="Instruksi" />
+                  <Label layoutX="25.0" layoutY="372.0" text="Batasan" />
+                  <Label layoutX="141.0" layoutY="8.0" text="Add Voucher">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="backbtn3" layoutX="16.0" layoutY="17.0" mnemonicParsing="false" onAction="#OnBackbtn3ClickButton" text="back" />
+                  <Button layoutX="339.0" layoutY="465.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="65.0" text="Save" />
+                  <TextField fx:id="idfield" layoutX="213.0" layoutY="62.0" prefWidth="147.0" />
+                  <TextField fx:id="namafield" layoutX="213.0" layoutY="100.0" />
+                  <TextField fx:id="jenisfield" layoutX="213.0" layoutY="140.0" />
+                  <DatePicker fx:id="tanggalpick" layoutX="215.0" layoutY="231.0" />
+                  <TextArea fx:id="instruksifield" layoutX="215.0" layoutY="283.0" prefHeight="81.0" prefWidth="199.0" style="-fx-wrap-text: true" />
+                  <TextArea fx:id="batasanfield" layoutX="215.0" layoutY="372.0" prefHeight="81.0" prefWidth="199.0" style="-fx-wrap-text: true" />
+                  <ChoiceBox fx:id="category" layoutX="213.0" layoutY="186.0" prefWidth="150.0">
+                     <items>
+                        <FXCollections fx:factory="observableArrayList">
+                           <String fx:value="Makanan &amp; Minuman" />
+                           <String fx:value="Fashion" />
+                           <String fx:value="Produk Digital" />
+                           <String fx:value="Travel" />
+                           <String fx:value="Game" />
+                        </FXCollections>
+                     </items>
+                  </ChoiceBox>
+               </children></AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</HBox>

@@ -59,6 +59,26 @@ public class ChildControl {
 
     private ObservableList<Voucher> vouchers;
 
+    public void onAddButtonClick(ActionEvent event) {
+        try {
+            // load addPage
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("addPage.fxml"));
+            Parent root = loader.load();
+
+            // ambil kontrol add
+            addPageControl control = loader.getController();
+
+            // buat stage popup baru
+            Stage popupadd = new Stage();
+            popupadd.initModality(Modality.APPLICATION_MODAL);
+            popupadd.setScene(new Scene(root));
+            popupadd.showAndWait();
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
 
     public enum Mode {
         VIEW, EDIT, DELETE
