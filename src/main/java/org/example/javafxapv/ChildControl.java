@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -54,8 +57,8 @@ public class ChildControl {
     @FXML
     private ChoiceBox<String> filter;
 
-//    @FXML
-//    private ImageView imageView;
+    private ObservableList<Voucher> vouchers;
+
 
     public enum Mode {
         VIEW, EDIT, DELETE
@@ -66,21 +69,34 @@ public class ChildControl {
 
     private String user;
 
-    // Metode untuk mengatur gambar ke ImageView
-//    public void setImage() {
-//        // Membuat objek Image dengan menggunakan path file gambar
-//        Image image = new Image("bucket.png");
-//
-//        // Mengatur gambar ke ImageView
-//        imageView.setImage(image);
-//    }
+    public void saveData(){
+        vouchers = tableView.getItems();
+    }
 
-//    @FXML
-//    public void initializeimage(){
-//        String imagePath = new File("bucket.png").toURI().toString();
-//        Image image = new Image(imagePath);
-//        imageView.setImage(image);
-//    }
+    public void reloadData(){
+        tableView.setItems(vouchers);
+    }
+
+    // Metode untuk menampilkan popup detailPage
+    private void showDetailPopup(Voucher voucher) {
+        try {
+            // Load detailPage.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("detailPage.fxml"));
+            Parent root = loader.load();
+
+            // Inisialisasi data di popup
+            detailPageControl controller = loader.getController();
+            controller.initData(voucher);
+
+            // Buat stage baru untuk popup
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL); // Atur modality agar tetap modal
+            popupStage.setScene(new Scene(root));
+            popupStage.showAndWait(); // Tampilkan popup dan tunggu sampai ditutup
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void setMode(Mode mode) {
         this.mode = mode;
@@ -119,7 +135,11 @@ public class ChildControl {
                         // Atur aksi untuk tombol detail
                         detailButton.setOnAction(event -> {
                             Voucher voucher = getTableView().getItems().get(getIndex());
-                            // Lakukan sesuatu saat tombol detail ditekan
+
+                            showDetailPopup(voucher);
+
+
+
                         });
 
                         // Atur aksi untuk tombol edit
@@ -186,9 +206,11 @@ public class ChildControl {
                     String jenis = resultSet.getString("jenis");
                     Date tanggal = resultSet.getDate("tanggalKadaluwarsa");
                     String kategori = resultSet.getString("kategori");
+                    String instruksi = resultSet.getString("instruksi");
+                    String batasan = resultSet.getString("batasan");
 
-                    vouchers.add(new Voucher(idVoucher, nama, jenis, tanggal, kategori));
-                    System.out.println(idVoucher + " " + nama + " " + jenis + " " + tanggal + " " + kategori);
+                    vouchers.add(new Voucher(idVoucher, nama, jenis, tanggal, kategori, instruksi, batasan));
+//                    System.out.println(idVoucher + " " + nama + " " + jenis + " " + tanggal + " " + kategori);
                     initialize1();
                     initialize2();
 //                    setImage();
@@ -241,6 +263,7 @@ public class ChildControl {
 
            stage.setScene(scene);
            stage.show();
+            System.out.println(user + " Logout");
         }catch(IOException e){
             e.printStackTrace();
         }

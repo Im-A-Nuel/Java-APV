@@ -12,6 +12,10 @@ public class Voucher {
     String kategori;
     java.sql.Date tanggal;
 
+    String instruksi = "-";
+
+    String batasan = "-";
+
     public Voucher(int idVoucher, String namaVoucher, String jenis, java.sql.Date tanggal, String kategori) {
         this.idVoucher = idVoucher;
         this.namaVoucher = namaVoucher;
@@ -19,6 +23,18 @@ public class Voucher {
         this.kategori = kategori;
         this.tanggal = tanggal;
     }
+
+
+    public Voucher(int idVoucher, String namaVoucher, String jenis, java.sql.Date tanggal, String kategori, String instruksi, String batasan) {
+        this.idVoucher = idVoucher;
+        this.namaVoucher = namaVoucher;
+        this.jenis = jenis;
+        this.kategori = kategori;
+        this.tanggal = tanggal;
+        this.instruksi = instruksi;
+        this.batasan = batasan;
+    }
+
 
     public int getIdVoucher() {
         return idVoucher;
@@ -58,5 +74,21 @@ public class Voucher {
 
     public void setTanggal(java.sql.Date tanggal) {
         this.tanggal = tanggal;
+    }
+
+    public String getInstruksi() {
+        return instruksi;
+    }
+
+    public void setInstruksi(String instruksi) {
+        this.instruksi = instruksi;
+    }
+
+    public String getBatasan() {
+        return batasan;
+    }
+
+    public void setBatasan(String batasan) {
+        this.batasan = batasan;
     }
 }

@@ -19,7 +19,11 @@
             <Button fx:id="editbutton" layoutX="32.0" layoutY="231.0" mnemonicParsing="false" onAction="#onEditButtonClick" prefHeight="27.0" prefWidth="134.0" text="edit" />
             <Button fx:id="deletebutton" layoutX="32.0" layoutY="277.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" prefHeight="27.0" prefWidth="134.0" text="delete" />
             <Button fx:id="viewbutton" layoutX="32.0" layoutY="187.0" mnemonicParsing="false" onAction="#onViewButtonClick" prefHeight="25.0" prefWidth="134.0" text="view" />
-            <ImageView fx:id="imageView" fitHeight="87.0" fitWidth="134.0" layoutX="33.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fitHeight="87.0" fitWidth="134.0" layoutX="33.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@bucket.png" />
+               </image>
+            </ImageView>
          </children></AnchorPane>
       <AnchorPane prefHeight="400.0" prefWidth="462.0" style="-fx-background-color: E9E8E8;">
          <children>
