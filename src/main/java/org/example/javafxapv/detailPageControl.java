@@ -62,6 +62,8 @@ public class detailPageControl {
 
         instruksiLabel.setText(voucher.getInstruksi());
         batasanLabel.setText((voucher.getBatasan()));
+
+
     }
 }
 

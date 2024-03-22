@@ -5,19 +5,18 @@ import java.util.Date;
 
 public class Voucher {
 
+    private int idVoucher;
+    private String user;
+    private String namaVoucher;
+    private String jenis;
+    private String kategori;
+    private java.sql.Date tanggal;
+    private String instruksi = "-";
+    private String batasan = "-";
 
-    int idVoucher;
-    String namaVoucher;
-    String jenis;
-    String kategori;
-    java.sql.Date tanggal;
-
-    String instruksi = "-";
-
-    String batasan = "-";
-
-    public Voucher(int idVoucher, String namaVoucher, String jenis, java.sql.Date tanggal, String kategori) {
+    public Voucher(int idVoucher, String user ,String namaVoucher, String jenis, java.sql.Date tanggal, String kategori) {
         this.idVoucher = idVoucher;
+        this.user = user;
         this.namaVoucher = namaVoucher;
         this.jenis = jenis;
         this.kategori = kategori;
@@ -25,8 +24,9 @@ public class Voucher {
     }
 
 
-    public Voucher(int idVoucher, String namaVoucher, String jenis, java.sql.Date tanggal, String kategori, String instruksi, String batasan) {
+    public Voucher(int idVoucher, String user , String namaVoucher, String jenis, java.sql.Date tanggal, String kategori, String instruksi, String batasan) {
         this.idVoucher = idVoucher;
+        this.user = user;
         this.namaVoucher = namaVoucher;
         this.jenis = jenis;
         this.kategori = kategori;

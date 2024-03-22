@@ -5,7 +5,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
@@ -13,14 +12,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-import java.io.File;
-import java.awt.*;
+import javax.swing.*;
 import java.io.IOException;
 import java.sql.*;
 
@@ -57,6 +53,15 @@ public class ChildControl {
     @FXML
     private ChoiceBox<String> filter;
 
+    public enum Mode {
+        VIEW, EDIT, DELETE
+    }
+
+    private Mode mode = Mode.VIEW; // Mode default adalah VIEW
+
+
+    private String user;
+
     private ObservableList<Voucher> vouchers;
 
     public void onAddButtonClick(ActionEvent event) {
@@ -67,27 +72,21 @@ public class ChildControl {
 
             // ambil kontrol add
             addPageControl control = loader.getController();
+            control.setUsername(getUser());
+
 
             // buat stage popup baru
             Stage popupadd = new Stage();
             popupadd.initModality(Modality.APPLICATION_MODAL);
             popupadd.setScene(new Scene(root));
             popupadd.showAndWait();
+            updateTableView();
 
         }catch (IOException e){
             e.printStackTrace();
         }
     }
 
-
-    public enum Mode {
-        VIEW, EDIT, DELETE
-    }
-
-    private Mode mode = Mode.VIEW; // Mode default adalah VIEW
-
-
-    private String user;
 
     public void saveData(){
         vouchers = tableView.getItems();
@@ -96,6 +95,15 @@ public class ChildControl {
     public void reloadData(){
         tableView.setItems(vouchers);
     }
+
+    public void updateTableView() {
+        // Ambil data voucher dari database atau sumber data lainnya
+        ObservableList<Voucher> updatedVouchers = getVoucherFromDatabase(user);
+
+        // Set data ke TableView
+        tableView.setItems(updatedVouchers);
+    }
+
 
     // Metode untuk menampilkan popup detailPage
     private void showDetailPopup(Voucher voucher) {
@@ -139,6 +147,38 @@ public class ChildControl {
         }
     }
 
+    private void delVoucher(Voucher voucher){
+        String user = getUser();
+        int id = voucher.getIdVoucher();
+
+        String query = "Delete from voucher where idVoucher = ? and username = ?";
+
+        try(
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/user", "root", "");
+                PreparedStatement ps = con.prepareStatement(query);
+            )
+        {
+            ps.setInt(1,id);
+            ps.setString(2,user);
+
+            int hasil = ps.executeUpdate();
+
+            if(hasil == 1){
+                String st = "Voucher dihapus";
+                JOptionPane.showMessageDialog(null, st);
+                System.out.println(getUser()  + " Menghapus Voucher");
+            }else {
+                String st = "Gagal Menghapus Voucher";
+                JOptionPane.showMessageDialog(null, st);
+                System.out.println(getUser() + " "  + st);
+            }
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+
+    }
+
     public void setMode(Mode mode) {
         this.mode = mode;
     }
@@ -160,9 +200,6 @@ public class ChildControl {
         tanggalColumn.setCellValueFactory(new PropertyValueFactory<>("tanggal"));
         kategoriColumn.setCellValueFactory(new PropertyValueFactory<>("kategori"));
 
-//
-//        // Menambahkan kolom tombol untuk setiap mode
-//        TableColumn<Voucher, Void> actionColumn = new TableColumn<>("Action");
         // Menambahkan tombol ke setiap baris
         Callback<TableColumn<Voucher, Void>, TableCell<Voucher, Void>> cellFactory = new Callback<>() {
             @Override
@@ -193,6 +230,20 @@ public class ChildControl {
                         deleteButton.setOnAction(event -> {
                             Voucher voucher = getTableView().getItems().get(getIndex());
                             // Lakukan sesuatu saat tombol delete ditekan
+                            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                            alert.setTitle("Konfirmasi Hapus");
+                            alert.setHeaderText("Menghapus voucher " + voucher.getNamaVoucher() + " ?");
+
+                            alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.NO);
+
+                            alert.showAndWait().ifPresent(buttonType -> {
+                                if (buttonType == ButtonType.YES){
+                                    delVoucher(voucher);
+                                    ChildControl.this.updateTableView();
+                                }else{
+
+                                }
+                            });
                         });
                     }
 
@@ -243,6 +294,7 @@ public class ChildControl {
                 while(resultSet.next()){
                     // ambil data voucuher dari hasil query
                     int idVoucher = resultSet.getInt("idVoucher");
+                    String usern = resultSet.getString("username");
                     String nama = resultSet.getString("nama");
                     String jenis = resultSet.getString("jenis");
                     Date tanggal = resultSet.getDate("tanggalKadaluwarsa");
@@ -250,11 +302,10 @@ public class ChildControl {
                     String instruksi = resultSet.getString("instruksi");
                     String batasan = resultSet.getString("batasan");
 
-                    vouchers.add(new Voucher(idVoucher, nama, jenis, tanggal, kategori, instruksi, batasan));
+                    vouchers.add(new Voucher(idVoucher, usern ,nama, jenis, tanggal, kategori, instruksi, batasan));
 //                    System.out.println(idVoucher + " " + nama + " " + jenis + " " + tanggal + " " + kategori);
                     initialize1();
                     initialize2();
-//                    setImage();
                 }
 
                 System.out.println("Database Acces");
@@ -315,7 +366,7 @@ public class ChildControl {
     }
 
     public void onRefreshButtonClick() {
-        tableView.refresh();
+        updateTableView();
     }
 
     public void onEditButtonClick() {
@@ -331,5 +382,9 @@ public class ChildControl {
     public void onViewButtonClick(ActionEvent actionEvent) {
         setMode(VIEW);
         onRefreshButtonClick();
+    }
+
+    public String getUser() {
+        return user;
     }
 }
