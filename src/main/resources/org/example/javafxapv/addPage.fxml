@@ -9,6 +9,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
@@ -38,7 +39,10 @@
                   <TextField fx:id="namainput" layoutX="213.0" layoutY="100.0" />
                   <TextField fx:id="jenisinput" layoutX="213.0" layoutY="140.0" />
                   <DatePicker fx:id="tanggalinput" layoutX="215.0" layoutY="231.0" />
-                  <TextArea fx:id="instruksiinput" layoutX="215.0" layoutY="283.0" prefHeight="81.0" prefWidth="199.0" style="-fx-wrap-text: true" />
+                  <TextArea fx:id="instruksiinput" layoutX="215.0" layoutY="283.0" prefHeight="81.0" prefWidth="199.0" style="-fx-wrap-text: true">
+                     <effect>
+                        <Blend />
+                     </effect></TextArea>
                   <TextArea fx:id="batasaninput" layoutX="215.0" layoutY="372.0" prefHeight="81.0" prefWidth="199.0" style="-fx-wrap-text: true" />
                   <ChoiceBox fx:id="categoryinput" layoutX="213.0" layoutY="186.0" prefWidth="150.0">
                      <items>
