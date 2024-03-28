@@ -135,12 +135,14 @@ public class ChildControl {
             // inisialiasi data popup
             editPageControl control = loader.getController();
             control.showData(voucher);
+            control.setUsername(getUser());
 
             //buat stage popup
             Stage popup = new Stage();
             popup.initModality(Modality.APPLICATION_MODAL);
             popup.setScene(new Scene(root));
             popup.showAndWait();
+            updateTableView();
 
         }catch (IOException e){
             e.printStackTrace();
