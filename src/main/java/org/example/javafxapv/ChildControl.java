@@ -26,6 +26,7 @@ import static org.example.javafxapv.ChildControl.Mode.*;
 public class ChildControl {
 
     public TableColumn actionColumn;
+    public TextField keysearch;
     @FXML
     private Button logout;
 
@@ -53,6 +54,7 @@ public class ChildControl {
     @FXML
     private ChoiceBox<String> filter;
 
+
     public enum Mode {
         VIEW, EDIT, DELETE
     }
@@ -63,6 +65,15 @@ public class ChildControl {
     private String user;
 
     private ObservableList<Voucher> vouchers;
+
+    public void onSearchButtonClick(ActionEvent event) {
+        String search = keysearch.getText();
+
+        ObservableList<Voucher> vouchers = SearchVoucherFromDatabase(user, search);
+
+        tableView.setItems(vouchers);
+
+    }
 
     public void onAddButtonClick(ActionEvent event) {
         try {
@@ -187,10 +198,28 @@ public class ChildControl {
 
     @FXML
     public void initialize2(){
-        ObservableList<String> items = FXCollections.observableArrayList("Kategori","Makanan & Minuman", "Fashion", "Produk Digital", "Travel", "Game");
+        ObservableList<String> items = FXCollections.observableArrayList("Makanan & Minuman", "Fashion", "Produk Digital", "Travel", "Game");
         filter.setItems(items);
 //        filter.getSelectionModel().selectFirst();
-        filter.setValue("Kategori");
+//        filter.setValue("Kategori");
+//        filter.setAccessibleText("Kategori");
+
+        filter.setOnAction(e -> {
+            String selectedCategory = filter.getValue();
+            if (selectedCategory != null) { // pastikan nilai yang dipilih tidak null
+                String searchQuery = selectedCategory;
+                filter.getSelectionModel().select(searchQuery);
+                filter.setValue(selectedCategory);
+                ObservableList<Voucher> searchResult = SearchVoucherFromDatabase(user, searchQuery);
+                tableView.setItems(searchResult);
+            } else {
+                // Penanganan jika tidak ada item yang dipilih
+                // Misalnya, memperbarui tabel atau tampilan lainnya dengan semua data
+                ObservableList<Voucher> allVouchers = SearchVoucherFromDatabase(user, ""); // Parameter kosong akan mengembalikan semua voucher
+                tableView.setItems(allVouchers);
+            }
+        });
+
     }
 
     @FXML
@@ -282,6 +311,47 @@ public class ChildControl {
 
 
     }
+
+    private ObservableList<Voucher> SearchVoucherFromDatabase(String username, String search){
+        ObservableList<Voucher> vouchers = FXCollections.observableArrayList();
+        String query = "SELECT * FROM voucher WHERE username = ? AND idVoucher LIKE ? OR nama LIKE ? OR jenis LIKE ? OR tanggalKadaluwarsa LIKE ? OR kategori LIKE ?";
+
+        try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/user", "root", "");
+            PreparedStatement ps = connection.prepareStatement(query)){
+
+            ps.setString(1, username);
+            ps.setString(2, "%" + search + "%");
+            ps.setString(3, "%" + search + "%");
+            ps.setString(4, "%" + search + "%");
+            ps.setString(5, "%" + search + "%");
+            ps.setString(6, "%" + search + "%");
+
+            try(ResultSet resultSet = ps.executeQuery()){
+                while(resultSet.next()){
+                    // ambil data voucuher dari hasil query
+                    int idVoucher = resultSet.getInt("idVoucher");
+                    String usern = resultSet.getString("username");
+                    String nama = resultSet.getString("nama");
+                    String jenis = resultSet.getString("jenis");
+                    Date tanggal = resultSet.getDate("tanggalKadaluwarsa");
+                    String kategori = resultSet.getString("kategori");
+                    String instruksi = resultSet.getString("instruksi");
+                    String batasan = resultSet.getString("batasan");
+
+                    vouchers.add(new Voucher(idVoucher, usern ,nama, jenis, tanggal, kategori, instruksi, batasan));
+                    initialize1();
+                    initialize2();
+                }
+
+                System.out.println("Searching in database");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return vouchers;
+    }
+
+
 
     private ObservableList<Voucher> getVoucherFromDatabase(String username){
         ObservableList<Voucher> vouchers = FXCollections.observableArrayList();
