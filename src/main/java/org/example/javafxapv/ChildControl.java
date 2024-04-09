@@ -52,7 +52,7 @@ public class ChildControl {
     private Label namelabel;
 
     @FXML
-    private ChoiceBox<String> filter;
+    private ChoiceBox filter;
 
 
     public enum Mode {
@@ -200,16 +200,12 @@ public class ChildControl {
     public void initialize2(){
         ObservableList<String> items = FXCollections.observableArrayList("Makanan & Minuman", "Fashion", "Produk Digital", "Travel", "Game");
         filter.setItems(items);
-//        filter.getSelectionModel().selectFirst();
-//        filter.setValue("Kategori");
-//        filter.setAccessibleText("Kategori");
+//        filter.setValue("Pilih Kategori");
 
         filter.setOnAction(e -> {
-            String selectedCategory = filter.getValue();
+            String selectedCategory = (String) filter.getValue();
             if (selectedCategory != null) { // pastikan nilai yang dipilih tidak null
                 String searchQuery = selectedCategory;
-                filter.getSelectionModel().select(searchQuery);
-                filter.setValue(selectedCategory);
                 ObservableList<Voucher> searchResult = SearchVoucherFromDatabase(user, searchQuery);
                 tableView.setItems(searchResult);
             } else {
@@ -218,7 +214,9 @@ public class ChildControl {
                 ObservableList<Voucher> allVouchers = SearchVoucherFromDatabase(user, ""); // Parameter kosong akan mengembalikan semua voucher
                 tableView.setItems(allVouchers);
             }
+            filter.setValue(selectedCategory);
         });
+
 
     }
 
