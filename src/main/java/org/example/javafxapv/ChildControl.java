@@ -11,16 +11,20 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.sql.*;
 
-import static org.example.javafxapv.ChildControl.Mode.*;
+//import static org.example.javafxapv.ChildControl.Mode.*;
 
 
 public class ChildControl {
@@ -54,12 +58,12 @@ public class ChildControl {
     @FXML
     private ChoiceBox filter;
 
-
-    public enum Mode {
-        VIEW, EDIT, DELETE
-    }
-
-    private Mode mode = Mode.VIEW; // Mode default adalah VIEW
+//
+//    public enum Mode {
+//        VIEW, EDIT, DELETE
+//    }
+//
+//    private Mode mode = Mode.VIEW; // Mode default adalah VIEW
 
 
     private String user;
@@ -192,9 +196,9 @@ public class ChildControl {
 
     }
 
-    public void setMode(Mode mode) {
-        this.mode = mode;
-    }
+//    public void setMode(Mode mode) {
+//        this.mode = mode;
+//    }
 
     @FXML
     public void initialize2(){
@@ -230,15 +234,23 @@ public class ChildControl {
         kategoriColumn.setCellValueFactory(new PropertyValueFactory<>("kategori"));
 
         // Menambahkan tombol ke setiap baris
-        Callback<TableColumn<Voucher, Void>, TableCell<Voucher, Void>> cellFactory = new Callback<>() {
-            @Override
-            public TableCell<Voucher, Void> call(final TableColumn<Voucher, Void> param) {
-                final TableCell<Voucher, Void> cell = new TableCell<>() {
-                    private final Button detailButton = new Button("Detail");
-                    private final Button editButton = new Button("Edit");
-                    private final Button deleteButton = new Button("Delete");
+        Callback<TableColumn<Voucher, Void>, TableCell<Voucher, Void>> cellFactory = param -> new TableCell<>() {
+            javafx.scene.text.Font font = new Font("Berlin Sans FB", 11);
+
+            private final Button detailButton = new Button("\uD83D\uDC41");
+
+            private final Button editButton = new Button("\uD83D\uDCDD");
+            private final Button deleteButton = new Button("\uD83D\uDDD1");
+
+
+                    private final HBox buttonbox = new HBox(detailButton, editButton, deleteButton);
 
                     {
+                        detailButton.setFont(font);
+                        editButton.setFont(font);
+                        deleteButton.setFont(font);
+                        buttonbox.setSpacing(2);
+
                         // Atur aksi untuk tombol detail
                         detailButton.setOnAction(event -> {
                             Voucher voucher = getTableView().getItems().get(getIndex());
@@ -276,6 +288,27 @@ public class ChildControl {
                         });
                     }
 
+//                    @Override
+//                    public void updateItem(Void item, boolean empty) {
+//                        super.updateItem(item, empty);
+//                        if (empty) {
+//                            setGraphic(null);
+//                        } else {
+//                            // Tampilkan tombol sesuai dengan mode
+//                            switch (mode) {
+//                                case VIEW:
+//                                    setGraphic(detailButton);
+//                                    break;
+//                                case EDIT:
+//                                    setGraphic(editButton);
+//                                    break;
+//                                case DELETE:
+//                                    setGraphic(deleteButton);
+//                                    break;
+//                            }
+//                        }
+//                    }
+
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);
@@ -283,36 +316,19 @@ public class ChildControl {
                             setGraphic(null);
                         } else {
                             // Tampilkan tombol sesuai dengan mode
-                            switch (mode) {
-                                case VIEW:
-                                    setGraphic(detailButton);
-                                    break;
-                                case EDIT:
-                                    setGraphic(editButton);
-                                    break;
-                                case DELETE:
-                                    setGraphic(deleteButton);
-                                    break;
+                                    setGraphic(buttonbox);
                             }
                         }
-                    }
-                };
-                return cell;
-            }
+
+
+
         };
-
-//        tableView.getColumns().add(actionColumn);
         actionColumn.setCellFactory(cellFactory);
-
-
-        // Menambahkan kolom aksi ke TableView
-
-
     }
 
     private ObservableList<Voucher> SearchVoucherFromDatabase(String username, String search){
         ObservableList<Voucher> vouchers = FXCollections.observableArrayList();
-        String query = "SELECT * FROM voucher WHERE username = ? AND idVoucher LIKE ? OR nama LIKE ? OR jenis LIKE ? OR tanggalKadaluwarsa LIKE ? OR kategori LIKE ?";
+        String query = "SELECT * FROM voucher WHERE username = ? AND (idVoucher LIKE ? OR nama LIKE ? OR jenis LIKE ? OR tanggalKadaluwarsa LIKE ? OR kategori LIKE ?)";
 
         try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/user", "root", "");
             PreparedStatement ps = connection.prepareStatement(query)){
@@ -439,20 +455,20 @@ public class ChildControl {
         updateTableView();
     }
 
-    public void onEditButtonClick() {
-        setMode(EDIT);
-        onRefreshButtonClick();
-    }
-
-    public void onDeleteButtonClick() {
-        setMode(DELETE);
-        onRefreshButtonClick();
-    }
-
-    public void onViewButtonClick(ActionEvent actionEvent) {
-        setMode(VIEW);
-        onRefreshButtonClick();
-    }
+//    public void onEditButtonClick() {
+//        setMode(EDIT);
+//        onRefreshButtonClick();
+//    }
+//
+//    public void onDeleteButtonClick() {
+//        setMode(DELETE);
+//        onRefreshButtonClick();
+//    }
+//
+//    public void onViewButtonClick(ActionEvent actionEvent) {
+//        setMode(VIEW);
+//        onRefreshButtonClick();
+//    }
 
     public String getUser() {
         return user;

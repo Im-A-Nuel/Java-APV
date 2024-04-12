@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="661.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.javafxapv.ChildControl">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="686.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.javafxapv.ChildControl">
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFF000;">
          <children>
@@ -23,16 +23,16 @@
                   <Font size="9.0" />
                </font></Button>
             <Label fx:id="namelabel" layoutX="82.0" layoutY="107.0" text="Nama" />
-            <Button fx:id="editbutton" layoutX="32.0" layoutY="231.0" mnemonicParsing="false" onAction="#onEditButtonClick" prefHeight="27.0" prefWidth="134.0" text="edit" />
-            <Button fx:id="deletebutton" layoutX="32.0" layoutY="277.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" prefHeight="27.0" prefWidth="134.0" text="delete" />
-            <Button fx:id="viewbutton" layoutX="32.0" layoutY="187.0" mnemonicParsing="false" onAction="#onViewButtonClick" prefHeight="25.0" prefWidth="134.0" text="view" />
+<!--            <Button fx:id="editbutton" layoutX="32.0" layoutY="231.0" mnemonicParsing="false" onAction="#onEditButtonClick" prefHeight="27.0" prefWidth="134.0" text="edit" />-->
+<!--            <Button fx:id="deletebutton" layoutX="32.0" layoutY="277.0" mnemonicParsing="false" onAction="#onDeleteButtonClick" prefHeight="27.0" prefWidth="134.0" text="delete" />-->
+<!--            <Button fx:id="viewbutton" layoutX="32.0" layoutY="187.0" mnemonicParsing="false" onAction="#onViewButtonClick" prefHeight="25.0" prefWidth="134.0" text="view" />-->
             <ImageView fitHeight="87.0" fitWidth="134.0" layoutX="33.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@bucket.png" />
                </image>
             </ImageView>
          </children></AnchorPane>
-      <AnchorPane prefHeight="400.0" prefWidth="462.0" style="-fx-background-color: E9E8E8;">
+      <AnchorPane prefHeight="400.0" prefWidth="487.0" style="-fx-background-color: E9E8E8;">
          <children>
             <TextField fx:id="keysearch" layoutX="91.0" layoutY="29.0" prefHeight="25.0" prefWidth="179.0" promptText="search" />
             <Button fx:id="search" layoutX="277.0" layoutY="28.0" mnemonicParsing="false" onAction="#onSearchButtonClick" prefHeight="27.0" prefWidth="32.0" text="🔎">
@@ -52,14 +52,14 @@
                </items>
             </ChoiceBox>
 
-            <TableView id="tableView" fx:id="tableView" layoutX="14.0" layoutY="66.0" prefHeight="316.0" prefWidth="439.0" style="-fx-font-size: 8px">
+            <TableView id="tableView" fx:id="tableView" layoutX="14.0" layoutY="66.0" prefHeight="316.0" prefWidth="459.0" style="-fx-font-size: 8px">
               <columns>
                 <TableColumn id="idVoucherColumn" fx:id="idVoucherColumn" maxWidth="50.0" prefWidth="75.0" style="-fx-alignment: CENTER;-fx-pref-columns: 1.0" text="id" />
                 <TableColumn id="namaColumn" fx:id="namaColumn" prefWidth="75.0" style="-fx-alignment: CENTER;-fx-pref-columns: 1.0" text="nama" />
                   <TableColumn id="jenisColumn" fx:id="jenisColumn" prefWidth="82.0" style="-fx-alignment: CENTER;-fx-pref-columns: 1.0" text="jenis" />
                   <TableColumn id="tanggalColumn" fx:id="tanggalColumn" minWidth="69.33335876464844" prefWidth="69.33335876464844" style="-fx-alignment: CENTER;-fx-pref-columns: 1.0" text="tanggal" />
                   <TableColumn id="kategoriColumn" fx:id="kategoriColumn" maxWidth="94.00002034505206" minWidth="94.00002034505206" prefWidth="94.00002034505206" resizable="false" style="-fx-alignment: CENTER;-fx-pref-columns: 1.0" text="kategori" />
-                 <TableColumn id="actionColumn" fx:id="actionColumn" maxWidth="65.0" prefWidth="68.0" style="-fx-alignment: CENTER;-fx-pref-columns: 1.0" text="Action" />
+                 <TableColumn id="actionColumn" fx:id="actionColumn" maxWidth="90.0" prefWidth="90.0" style="-fx-alignment: CENTER;-fx-pref-columns: 1.0" text="Action" />
               </columns>
             </TableView>
             <Button fx:id="refresh" layoutX="14.0" layoutY="28.0" mnemonicParsing="false" onAction="#onRefreshButtonClick" prefWidth="32.0" text="🔃" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS">
